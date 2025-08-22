@@ -58,7 +58,7 @@ const ProfilePage = () => {
     }
   };
 
- const sendMessage = async () => {
+const sendMessage = async () => {
   if (!currentMessage.trim()) return;
 
   // Create user message
@@ -71,7 +71,7 @@ const ProfilePage = () => {
 
   // Add user message to chat
   setChatMessages(prev => [...prev, userMessage]);
-  
+
   // Store the current message before clearing it
   const messageToSend = currentMessage;
   setCurrentMessage('');
@@ -85,24 +85,24 @@ const ProfilePage = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message: messageToSend,
+        input: messageToSend,
         timestamp: new Date().toISOString(),
         sessionId: Date.now(), // Optional: for conversation tracking
       })
     });
-    console.log(response)
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
-    
-    // Create bot response message
+    console.log("Chat API response:", data);
+
+    // ✅ Use `data.value` from backend response
     const botMessage = {
       id: Date.now() + 1,
       sender: 'bot',
-      message: data.message || data.response, // Adjust based on your backend response structure
+      message: data.value || "⚠️ No response received from server.",
       timestamp: new Date().toLocaleTimeString()
     };
 
@@ -111,12 +111,12 @@ const ProfilePage = () => {
 
   } catch (error) {
     console.error('Error fetching bot response:', error);
-    
+
     // Fallback bot message in case of error
     const errorBotMessage = {
       id: Date.now() + 1,
       sender: 'bot',
-      message: "I'm sorry, I'm having trouble responding right now. Please try again.",
+      message: "⚠️ I'm sorry, I'm having trouble responding right now. Please try again.",
       timestamp: new Date().toLocaleTimeString()
     };
 

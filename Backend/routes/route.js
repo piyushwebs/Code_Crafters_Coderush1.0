@@ -28,7 +28,7 @@ router.post(
 
       const result = await model.generateContent(input);
       const value = result.response.text();
-
+      console.log(value);
       res.json({ input, value });
     } catch (error) {
       console.error("Error generating content:", error);
