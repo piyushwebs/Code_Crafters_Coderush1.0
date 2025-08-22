@@ -35,7 +35,6 @@ const Navbar = () => {
         <div className="nav-links">
           <a href="#features" onClick={scrollToFeatures}>Features</a>
           <a href="#about">About</a>
-          <a href="#contact">Support</a>
           <a href="/login" className="nav-button login-btn">Sign In</a>
           <a href="/signup" className="nav-button signup-btn">Sign Up</a>
         </div>

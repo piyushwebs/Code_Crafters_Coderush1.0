@@ -6,6 +6,7 @@ const rateLimit = require("express-rate-limit");
 
 const authRoutes = require("./routes/auth");
 const requireAuth = require("./middlewares/requireAuth");
+const route = require("./routes/route");
 
 const app = express();
 
@@ -29,9 +30,15 @@ app.get('/health',(req,res)=> res.status(200).json({status:'ok'}));
 
 app.use('/api/auth',authRoutes);
 
+app.use('/api/route',route);
+
 app.get('/api/profile',requireAuth,(req,res)=>{
   res.json({message:"Protected profile data", user: req.user});
 });
+
+
+
+
 
 
 module.exports = app;
