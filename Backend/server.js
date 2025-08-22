@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const app = require("./index");
 const {mongo_url, PORT} = process.env;/* While creating these repo you need to create you dotenv file */
-// Not so good
+// Not so
 
 
 

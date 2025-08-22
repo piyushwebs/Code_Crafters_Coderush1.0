@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./profile.css";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -37,7 +38,7 @@ const Profile = () => {
   }
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center" }} className="mainCont">
       <h2>Profile Page</h2>
       <pre>{JSON.stringify(profile, null, 2)}</pre>
     </div>

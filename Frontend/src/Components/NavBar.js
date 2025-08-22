@@ -1,47 +1,52 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import React, { useState, useEffect } from 'react';
+import logo from '../Utils/logo.png';
+import './NavBar.css';
 
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
 
-export default function NavBar() {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const scrollToFeatures = () => {
+    const featuresElement = document.getElementById('features');
+    if (featuresElement) {
+      featuresElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <>
-      <nav className="navbar navbar-light navbar-expand-lg " style={{backgroundColor:"rgb(207, 241, 229)", margin:"10px"}}>
-      <a className="navbar-brand" href="/HomePage">
-       <h3> Logo </h3>
-      </a>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav">
-          <li className="nav-item active">
-            <a className="nav-link" href="/">
-              Home <span className="sr-only">(current)</span>
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/Login">
-              Login
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/Signup">
-              Signup
-            </a>
-          </li>
-        </ul>
+    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+      <div className="nav-container">
+       <a href="/" className="nav-logo">
+        <div className="nav-logo">
+          <span className="logo-icon"><img src={logo} style={{height:"100px", width:"100px"}} ></img></span>
+          <span className="logo-text">NeuroAi</span>
+        </div>
+       </a>
+        <div className="nav-links">
+          <a href="#features" onClick={scrollToFeatures}>Features</a>
+          <a href="#about">About</a>
+          <a href="#contact">Support</a>
+          <a href="/login" className="nav-button login-btn">Sign In</a>
+          <a href="/signup" className="nav-button signup-btn">Sign Up</a>
+        </div>
+        <div className="mobile-menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     </nav>
-    </>
   );
-}
+};
+
+export default Navbar;
