@@ -4,7 +4,7 @@ import HomePage from "./Pages/HomePage";
 import NavBar from "./Components/NavBar";
 import Login from "./Pages/Login/Login.js"
 import SignupPage from "./Pages/SignUp/SignUp.js";
-import Profile from "./Components/profile.js";
+import Profile from "./Components/Profile.js"
 
 
 export default function App()
@@ -16,7 +16,7 @@ export default function App()
       <Route path="/" element = {<HomePage/>}/>
       <Route path="/Login" element = {<Login/>}/>
       <Route path="/Signup" element = {<SignupPage/>}/>
-      <Route path="/profile" element = {<Profile/>}/>
+      <Route path="/Profile" element = {<Profile/>}/>
      </Routes>
     </>
   );

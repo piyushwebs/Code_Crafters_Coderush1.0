@@ -111,10 +111,20 @@ const SignupPage = () => {
       });
 
       const data = await res.json();
+      console.log(data);
       if (res.ok) {
         localStorage.setItem('token', data.token);
+        if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+      } else {
+        // fallback if backend doesn’t send user object
+        localStorage.setItem('user', JSON.stringify({
+          name: payload.name,
+          email: payload.email
+        }));
+      }
         alert('🎉 Account created successfully!');
-        window.location.href = '/profile';
+        window.location.href = '/Profile';
       } else {
         alert(data.error || 'Signup failed');
       }

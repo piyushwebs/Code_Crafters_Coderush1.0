@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const LoginPage = () => {
@@ -6,6 +7,7 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
+    const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,7 +29,7 @@ const LoginPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -57,7 +59,7 @@ const LoginPage = () => {
       const res = await fetch("http://localhost:4004/api/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -66,8 +68,19 @@ const LoginPage = () => {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+          // fallback if backend doesn’t send user
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              email: formData.email,
+            })
+          );
+        }
         alert("✅ Welcome back! Your wellness journey continues...");
-        window.location.href = "/profile"; // Changed to profile
+        navigate("/Profile"); 
       } else {
         alert(data.error || "Login failed");
       }
@@ -85,7 +98,9 @@ const LoginPage = () => {
         <div className="wellness-header">
           <div className="wellness-icon">🧠💚</div>
           <h1 className="login-title">Welcome Back</h1>
-          <p className="login-subtitle">Continue your mental wellness journey</p>
+          <p className="login-subtitle">
+            Continue your mental wellness journey
+          </p>
         </div>
 
         <div className="form-group">
@@ -96,13 +111,13 @@ const LoginPage = () => {
             type="email"
             id="email"
             name="email"
-            className={`form-input ${errors.email ? 'error' : ''}`}
+            className={`form-input ${errors.email ? "error" : ""}`}
             placeholder="Enter your email"
             value={formData.email}
             onChange={handleInputChange}
           />
           {errors.email && (
-            <div className={`error-message ${errors.email ? 'show' : ''}`}>
+            <div className={`error-message ${errors.email ? "show" : ""}`}>
               {errors.email}
             </div>
           )}
@@ -116,13 +131,13 @@ const LoginPage = () => {
             type="password"
             id="password"
             name="password"
-            className={`form-input ${errors.password ? 'error' : ''}`}
+            className={`form-input ${errors.password ? "error" : ""}`}
             placeholder="Enter your password"
             value={formData.password}
             onChange={handleInputChange}
           />
           {errors.password && (
-            <div className={`error-message ${errors.password ? 'show' : ''}`}>
+            <div className={`error-message ${errors.password ? "show" : ""}`}>
               {errors.password}
             </div>
           )}
@@ -153,7 +168,7 @@ const LoginPage = () => {
 
         <div className="SingUp-redirect">
           New to mental wellness support?{" "}
-          <a href="/signup">Start your journey here</a>
+          <a href="/Signup">Start your journey here</a>
         </div>
       </div>
     </div>
