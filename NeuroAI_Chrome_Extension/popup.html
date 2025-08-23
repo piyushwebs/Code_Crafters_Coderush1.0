@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NeuroAI Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="initial-view">
+            <div class="header">
+                <img src="icons/logo.png" alt="icon" class="logo">
+                <h1>NeuroAI Analyzer</h1>
+            </div>
+            <p>Get preliminary insights from EEG data. This is not a medical diagnosis.</p>
+            <button id="upload-button">Upload .edf File</button>
+            <input type="file" id="file-input" accept=".edf" hidden>
+        </div>
+
+        <div id="loading-view" class="hidden">
+            <div class="spinner"></div>
+            <p id="status-text">Analyzing...</p>
+        </div>
+
+        <div id="result-view" class="hidden">
+            <h2>Analysis Insights</h2>
+            <div id="result-text"></div>
+            <button id="start-over-button">Analyze Another File</button>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
