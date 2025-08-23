@@ -1,4 +1,11 @@
 const express = require("express");
+const multer = require("multer");
+const fs = require("fs");
+const FormData = require("form-data"); // still needed
+
+const upload = multer({ dest: "uploads/" });
+const User = require("../models/User.js");
+
 const { body, validationResult } = require("express-validator");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
@@ -36,5 +43,50 @@ router.post(
     }
   }
 );
+
+
+router.post("/analyze", upload.single("edffile"), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No EDF file uploaded" });
+
+  try {
+    // Prepare file for EEG API
+    const formData = new FormData();
+    formData.append("file", fs.createReadStream(req.file.path));
+
+    const eegResponse = await fetch("https://586f8e852237.ngrok-free.app/predict", {
+      method: "POST",
+      body: formData,
+      headers: formData.getHeaders(),
+    });
+
+    const eegResult = await eegResponse.json();
+
+    // Delete uploaded file
+    fs.unlinkSync(req.file.path);
+
+    // Return full EEG JSON result
+    res.json(eegResult);
+
+  } catch (error) {
+    console.error("EEG analysis error:", error);
+    res.status(500).json({ error: "Error analyzing EDF file" });
+  }
+});
+
+router.delete("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User deleted successfully", deletedUser });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting user", error: error.message });
+  }
+});
 
 module.exports = router;

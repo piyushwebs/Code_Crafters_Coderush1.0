@@ -14,6 +14,7 @@ const app = express();
 app.use(helmet());
 app.use(cors({origin:true,credentials:true}))
 app.use(express.json({limit:'10kb'}));
+app.use(cors());
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -36,9 +37,11 @@ app.get('/api/profile',requireAuth,(req,res)=>{
   res.json({message:"Protected profile data", user: req.user});
 });
 
-
-
-
+app.use(cors({
+  origin: "http://localhost:3000",  // your frontend URL
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 
 module.exports = app;
